@@ -18,7 +18,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: APK Upload
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: ]
+            app/build/outputs/apk/debug/app-debug.apk
+            /app/build/outputs/apk/debug/app-debug.apk
+            /Users/s.grundhoefer/AndroidStudioProjects/UllerApp/app/build/outputs/apk/debug/app-debug.apk
+            /build/outputs/apk/debug/app-debug.apk
   test:
     runs-on: self-hosted
     steps:
