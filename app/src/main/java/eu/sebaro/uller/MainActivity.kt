@@ -162,7 +162,7 @@ class MainActivity : ComponentActivity() {
                                         Row(
                                             modifier = Modifier.padding(8.dp).fillMaxWidth()
                                                 .height(80.dp)
-                                                .clickable {
+                                                .clickable(onClickLabel = "${shop.name} card") {
                                                     url = shop.url
                                                     navController.navigate("webview/")
                                                 }
@@ -170,7 +170,6 @@ class MainActivity : ComponentActivity() {
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.SpaceEvenly
                                         ) {
-                                            val favorite = dataManager.isSubscribed(it.name)
                                             Text(
                                                 text = shop.name,
                                                 modifier = Modifier
@@ -187,20 +186,24 @@ class MainActivity : ComponentActivity() {
                                                 text = (if (shop.available) "Verfügbar" else "nicht verfügbar"),
                                                 maxLines = 2,
                                                 modifier = Modifier
-                                                    //.background(Color.Cyan)
                                                     .weight(0.2f)
                                                     .align(Alignment.CenterVertically)
                                                     .clickable {
-                                                        notYetDone(shop.url)
+                                                        url = shop.url
+                                                        navController.navigate("webview/")
                                                     }
                                             )
                                             Image(
                                                 painter = painterResource(if (shop.available) R.drawable.ic_available else R.drawable.ic_not_available),
                                                 colorFilter = ColorFilter.tint((if (shop.available) Color.Green else Color.Red)),
-                                                contentDescription = "Image",
+                                                contentDescription = "availability ${product.name}",
                                                 modifier = Modifier
                                                     .align(Alignment.CenterVertically)
                                                     .weight(0.2f)
+                                                    .clickable {
+                                                        url = shop.url
+                                                        navController.navigate("webview/")
+                                                    }
                                             )
                                         }
 
@@ -228,9 +231,9 @@ class MainActivity : ComponentActivity() {
                             .clip(RoundedCornerShape(8.dp))
                             .height(80.dp)
                             .fillMaxWidth()
-                            .clickable {
+                            .clickable(onClickLabel = "${product.name} card") {
                                 navController.navigate("details/${product.name}")
-                            }
+                            },
                     ) {
                         Row(
                             modifier = Modifier.padding(8.dp).fillMaxWidth()
@@ -240,7 +243,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Image(
                                 painterResource(id = getCategoryImage(product)),
-                                "Image",
+                                contentDescription = "shop ${product.name}",
                                 modifier = Modifier.padding(8.dp).weight(0.3f)
                             )
                             val favorite = dataManager.isSubscribed(product.name)
@@ -253,7 +256,7 @@ class MainActivity : ComponentActivity() {
                             Image(
                                 painter = painterResource(if (favorite) R.drawable.ic_bookmark_added else R.drawable.ic_bookmark_add),
                                 colorFilter = ColorFilter.tint((if (favorite) Color.Green else Color.LightGray)),
-                                contentDescription = "Image",
+                                contentDescription = "subscribe ${product.name}",
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically)
                                     .weight(0.2f)
@@ -342,21 +345,6 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .background(MaterialTheme.colors.primary)
-                    ) {
-                        Text(
-                            text = "WebView Page",
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
                     Column {
                         AndroidView(
                             factory = {

@@ -144,6 +144,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
 
     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
 
     testImplementation("io.appium:java-client:7.6.0")
     // Required -- JUnit 4 framework
@@ -152,6 +153,7 @@ dependencies {
     testImplementation("androidx.test:core:1.4.0")
     // Optional -- Mockito framework
     testImplementation("org.mockito:mockito-core:2.8.9")
+    testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
