@@ -1,0 +1,25 @@
+name: Java CI with Gradle
+
+on:
+  # Trigger on every pull request and on push
+  # to the `main` branch.
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: MB0084
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Build the app
+        run: ./gradlew build
+  test:
+    runs-on: MB0084
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Build the app
+        run: ./gradlew test
