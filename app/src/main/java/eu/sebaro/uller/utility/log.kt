@@ -12,10 +12,6 @@ import android.util.Log
 
 const val logFileName = "log.kt"
 
-//fun log(error: Throwable? = null, msg: () -> String) {
-//    log(msg(), error)
-//}
-
 fun log(msg: String, error: Throwable? = null) {
     if (BuildConfig.DEBUG.not()) return // only log in debug builds!
 

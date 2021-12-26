@@ -3,9 +3,11 @@ import java.net.NetworkInterface
 
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     kotlin("android")
     kotlin("plugin.serialization")
     id("com.github.triplet.play")
+    id("com.google.firebase.appdistribution")
 }
 
 val appVersionName = "1.0.3"
@@ -13,23 +15,22 @@ val appVersionCode = 6
 
 val git_hash = "git rev-parse --short HEAD".runCommand()
 
-// local url
-//val host_url = "http://${getLocalIPv4().hostAddress}:8080/"
-// production url
-val host_url = "https://android-dm.dev.7p-group.com/"
+val host_url = "http://${getLocalIPv4().hostAddress}:8081/"
+//val host_url = "http://10.0.2.2:8080/"
+
 val api_version = 1
 
-val composeVersion = "1.0.0-rc02"
+val composeVersion = "1.0.5"
 val okhttpVersion = "4.9.1"
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        applicationId = "com.amr_7p.devicemanagement"
-        minSdk = 21
-        targetSdk = 30
+        applicationId = "eu.sebaro.uller"
+        minSdk = 23
+        targetSdk = 31
         versionName = appVersionName
         versionCode = appVersionCode
 
@@ -41,22 +42,45 @@ android {
     }
     signingConfigs {
         create("release") {
-            storeFile = file("playstore-key.keystore")
-            storePassword = "equai30oQue2piHU"
+            storeFile = file("upload-keystore.jks")
+            storePassword = ""
             keyAlias = "upload"
-            keyPassword = "equai30oQue2piHU"
+            keyPassword = ""
         }
     }
     buildTypes {
         release {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
+            release {
+                firebaseAppDistribution {
+                    appId = "1:540879684846:android:d5d8949a582939434e1fff"
+                    artifactType = "AAB"
+                    testers = "your@exampleemail.com, cerseimartell.772371@email.com"
+                }
+            }
         }
         debug {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            firebaseAppDistribution {
+                appId = "1:540879684846:android:d5d8949a582939434e1fff"
+                artifactType = "AAB"
+                testers = "your@exampleemail.com, cerseimartell.772371@email.com"
+            }
+
         }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     compileOptions {
@@ -64,9 +88,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 
     buildFeatures {
         compose = true
@@ -84,20 +105,54 @@ play {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation(platform ("com.google.firebase:firebase-bom:29.0.2"))
+    implementation ("com.google.firebase:firebase-messaging-ktx")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
+    // Firebase Cloud Messaging (Java)
+    implementation ("com.google.firebase:firebase-messaging")
+    implementation ("com.google.firebase:firebase-installations-ktx:17.0.0")
+    implementation ("com.google.firebase:firebase-analytics")
 
+    implementation("androidx.compose.animation:animation:$composeVersion")
+    implementation("androidx.compose.foundation:foundation:$composeVersion")
+    implementation("androidx.compose.foundation:foundation-layout:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.material:material-icons-core:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.activity:activity-compose:1.3.0-rc02")
+    implementation("androidx.activity:activity-compose:1.4.0")
 
-    implementation("androidx.work:work-runtime-ktx:2.5.0")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
-}
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-RC")
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+
+    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+    implementation("androidx.compose.runtime:runtime:$composeVersion")
+    implementation("androidx.test.uiautomator:uiautomator:2.2.0")
+
+    implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
+
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
+
+    testImplementation("io.appium:java-client:7.6.0")
+    // Required -- JUnit 4 framework
+    testImplementation("junit:junit:4.13.2")
+    // Optional -- Robolectric environment
+    testImplementation("androidx.test:core:1.4.0")
+    // Optional -- Mockito framework
+    testImplementation("org.mockito:mockito-core:2.8.9")
+}
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
     val byteOut = ByteArrayOutputStream()
@@ -115,3 +170,4 @@ fun getLocalIPv4(): java.net.Inet4Address =
         .flatMap { it.inetAddresses.toList() }
         .filterIsInstance<java.net.Inet4Address>()
         .first { it.isLoopbackAddress.not() }
+

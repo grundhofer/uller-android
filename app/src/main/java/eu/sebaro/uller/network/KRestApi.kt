@@ -1,7 +1,9 @@
 package eu.sebaro.uller.network
 
-import android.util.Base64
 import android.util.Log
+import eu.sebaro.uller.BuildConfig
+import eu.sebaro.uller.log
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.*
@@ -14,11 +16,18 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 import java.nio.charset.Charset
+import kotlin.coroutines.CoroutineContext
 
 data class PinnedDomain(val domain: String, val certificateFingerPrint: String)
 
 class HttpException(val code: Int, override val message: String, val body: String?) : IOException(message)
 class JsonParsingError(): IOException()
+
+fun getSubscriptionHandler(): CoroutineContext {
+    return CoroutineExceptionHandler { _, exception ->
+        println("Server is Offline => Subscription data is not synchronized $exception")
+    }
+}
 
 class KRestApi(
     private val baseUrl: String,
@@ -126,13 +135,6 @@ class KRestApi(
             }
             null
         }
-
-        fun queryParam(name: String, value: String?): UrlScope {
-            if (value != null) { // do not add if null
-                urlBuilder.addQueryParameter(name, value)
-            }
-            return this
-        }
     }
 
     private fun checkResponse(response: Response) {
@@ -179,24 +181,5 @@ class ConfigScope(val builder: OkHttpClient.Builder) {
 
     fun addInterceptor(interceptor: Interceptor) {
         builder.addInterceptor(interceptor)
-    }
-
-    fun addBasicAuth(user: String, password: String) {
-        val authHeaderKey = "Authorization"
-
-        val userAndPassword = "$user:$password"
-        val encoded = Base64.encodeToString(userAndPassword.encodeToByteArray(), Base64.NO_WRAP)
-        val credentials = "Basic $encoded"
-
-        addHeader(authHeaderKey, credentials)
-    }
-
-    fun addPinnedDomains(pinnedDomainList: List<PinnedDomain>) {
-        val certificatePinner = CertificatePinner.Builder().apply {
-            pinnedDomainList.forEach {
-                add(it.domain, it.certificateFingerPrint)
-            }
-        }.build()
-        builder.certificatePinner(certificatePinner)
     }
 }
