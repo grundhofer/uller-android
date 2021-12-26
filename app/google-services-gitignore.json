@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "540879684846",
+    "project_id": "uller-app",
+    "storage_bucket": "uller-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540879684846:android:d5d8949a582939434e1fff",
+        "android_client_info": {
+          "package_name": "eu.sebaro.uller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540879684846-mrecpiu59o424a224ebsd266n7mhji7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmiDPRi9917cbTKjIbscj5xdaAWDQQQm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540879684846-mrecpiu59o424a224ebsd266n7mhji7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

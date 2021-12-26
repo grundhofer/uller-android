@@ -34,7 +34,6 @@ android {
         versionName = appVersionName
         versionCode = appVersionCode
 
-
         buildConfigField("String", "GIT_HASH", "\"$git_hash\"")
         buildConfigField("String", "HOST_URL", "\"$host_url\"")
         buildConfigField("Integer", "API_VERSION", "$api_version")
