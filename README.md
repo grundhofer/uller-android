@@ -6,7 +6,7 @@ In this example, the current generation of video game consoles and graphics card
 The list of products to be subscribed to can be exchanged at will and is obtained by the Android app from the Uller backend.
 
 #### Other Uller repos 
-- See the [Uller Backend](https://github.com/grundhofer/uller-backend) repo to get the App running.
+- See the [Uller Backend](https://github.com/grundhofer/uller-backend) repo to get the App running,handle notification subscriptions and sending them.
 - See the [Uller web Front-end](https://github.com/grundhofer/uller-dashboard-flutter_web) repo for testing the notfication service.
 
 #### Prerequisites:
