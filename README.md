@@ -7,7 +7,7 @@ The list of products to be subscribed to can be exchanged at will and is obtaine
 
 #### Other Uller repos 
 - See the [Uller Backend](https://github.com/grundhofer/uller-backend) repo to get the App running,handle notification subscriptions and sending them.
-- See the [Uller web Front-end](https://github.com/grundhofer/uller-dashboard-flutter_web) repo for testing the notfication service.
+- See the [Uller Web App](https://github.com/grundhofer/uller-dashboard-flutter_web) repo for testing the notfication service.
 
 #### Prerequisites:
 In order to use the Uller app, among other things, The Google Services Gradle plugin must be configured and 
